@@ -1,16 +1,8 @@
-//const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
 const { generateToken, sendPasswordResetEmail } = require('../utils/auth');
 const { getAllAvatars } = require('../utils/getAllAvatars');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-//const { google } = require('googleapis');
-
-// const oauth2Client = new OAuth2Client(
-//   '225763645761-hsk3k9suo4qdjenika5i9deutkg7h5u1.apps.googleusercontent.com',
-//   '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',
-//   'http://localhost:3000',
-// );
 
 // Get leaderboard function
 const leaderboard = async (req, res) => {

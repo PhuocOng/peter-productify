@@ -15,7 +15,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import { setUser } from '../../slices/UserStateSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
-// import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { set } from '../../slices/MonthEventsSlice';
 import { createUser } from '../../service/user';
@@ -52,44 +51,6 @@ const Login = () => {
       setLoad(false);
     }
   };
-  // useEffect(() => {
-  //   if (user) {
-  //     axios
-  //       .get(
-  //         `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${user.access_token}`,
-  //             Accept: 'application/json',
-  //           },
-  //         },
-  //       )
-  //       .then(res => {
-  //         LoginOrSignUp(res.data.email, res.data.name, res.data.id);
-  //       })
-
-  //       .catch(err => console.log(err));
-  //   }
-  // }, [user]);
-
-  // const GoogleLoginHandler = useGoogleLogin({
-  //   flow: 'auth-code',
-  //   scope:
-  //     'openid email profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events',
-  //   onSuccess: async codeResponse => {
-  //     console.log('codeResponse', codeResponse);
-  //     let tokenData = await axios.post(
-  //       'http://localhost:5000/api/users/getUserToken',
-
-  //       codeResponse,
-  //     );
-
-  //     await setUser(tokenData.data);
-  //     localStorage.setItem('ggToken', tokenData.data.refresh_token);
-  //   },
-
-  //   onError: error => console.log('Login Failed:', error),
-  // });
 
   const LoginOrSignUp = async (email, username, password) => {
     console.log('email', email, username, password);
@@ -145,17 +106,6 @@ const Login = () => {
       <Text fontSize="xl" fontWeight="bold" textAlign="center">
         Or
       </Text>
-      {/* <Button
-        // background={"#a9caee"}
-        backgroundImage={'linear-gradient(315deg, #fde7f9 0%, #aacaef 74%)'}
-        _hover={{ background: '#a9caee' }}
-        width="100%"
-        style={{ marginTop: 15, alignSelf: 'center' }}
-        onClick={() => GoogleLoginHandler()}
-        isLoading={load}
-      >
-        Sign in with Google
-      </Button> */}
     </VStack>
   );
 };

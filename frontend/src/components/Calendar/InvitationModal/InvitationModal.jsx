@@ -8,7 +8,6 @@ import { addTodayEvent } from '../../../slices/TodayEventsSlice';
 
 const InvitationModal = () => {
   const exampleTokenForPhuoc = JSON.parse(localStorage.getItem('user')).token;
-  // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODBiNTY1ZDhhMzVhNTViMDE2MTFmYiIsImlhdCI6MTY4NjE1NzQxOSwiZXhwIjoxNjg4NzQ5NDE5fQ.u2Xv7d9vm62wFiNQEJgq4Mak6LBBjpe9I69Dl4BH8eA';
   const [invitations, setInvitations] = useState([]);
   const dispatch = useDispatch();
   const modalRef = useRef(null);
