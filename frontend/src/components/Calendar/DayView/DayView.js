@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 const DayView = () => {
   const dispatch = useDispatch();
   const events = useSelector(state => state.TodayEvents.value);
-  const CurrentDate = useSelector(state => state.CurrentDate.value)
+  const CurrentDate = useSelector(state => state.CurrentDate.value);
 
   useEffect(() => {
     dispatch(fetchTodayEvents(CurrentDate));
@@ -74,10 +74,10 @@ const DayView = () => {
             DateTime.fromISO(prevEvent.start),
             'hours',
           ).hours <
-          DateTime.fromISO(event.end).diff(
-            DateTime.fromISO(event.start),
-            'hours',
-          ).hours,
+            DateTime.fromISO(event.end).diff(
+              DateTime.fromISO(event.start),
+              'hours',
+            ).hours,
       );
     const zIndex = earlierStartEvents.length + shorterDurationEvents.length + 1; // Higher z-index for events with earlier start time and shorter duration
     return zIndex;
@@ -152,10 +152,13 @@ const DayView = () => {
                     zIndex: zIndex,
                   }}
                 >
-                  <div className={styles.eventDetails} style={{
-                    backgroundColor:
-                      event.status !== 'completed' ? event.label.color : '',
-                  }}>
+                  <div
+                    className={styles.eventDetails}
+                    style={{
+                      backgroundColor:
+                        event.status !== 'completed' ? event.label.color : '',
+                    }}
+                  >
                     <div className={styles.eventTitle}>{event.name}</div>
                     <div>{calculateTime(event.start, event.end)}</div>{' '}
                   </div>

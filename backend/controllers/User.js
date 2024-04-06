@@ -1,16 +1,16 @@
-const { OAuth2Client } = require('google-auth-library');
+//const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
 const { generateToken, sendPasswordResetEmail } = require('../utils/auth');
 const { getAllAvatars } = require('../utils/getAllAvatars');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const { google } = require('googleapis');
+//const { google } = require('googleapis');
 
-const oauth2Client = new OAuth2Client(
-  '225763645761-hsk3k9suo4qdjenika5i9deutkg7h5u1.apps.googleusercontent.com',
-  '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',
-  'http://localhost:3000',
-);
+// const oauth2Client = new OAuth2Client(
+//   '225763645761-hsk3k9suo4qdjenika5i9deutkg7h5u1.apps.googleusercontent.com',
+//   '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',
+//   'http://localhost:3000',
+// );
 
 // Get leaderboard function
 const leaderboard = async (req, res) => {
@@ -27,6 +27,12 @@ const leaderboard = async (req, res) => {
 // Sign up function
 const signUp = async (req, res) => {
   let { email, username, password } = req.body;
+  console.log(
+    'receive email, username, pass in signUp in user.js',
+    email,
+    username,
+    password,
+  );
   // simple validation
   if (!email || !username || !password) {
     return res.status(400).json({ msg: 'Please enter all fields' });
@@ -59,6 +65,7 @@ const signUp = async (req, res) => {
       bio: newUserSaved.bio,
     });
   } catch (error) {
+    console.log('we have error with signup in user.js in backend', error);
     return res.status(500).json({ msg: error.message });
   }
 };
@@ -66,6 +73,7 @@ const signUp = async (req, res) => {
 // Login function
 const login = async (req, res) => {
   const { email, password } = req.body;
+  console.log('login in backend (user.js file), receive email, password');
 
   // simple validation
   if (!email || !password) {
@@ -90,6 +98,7 @@ const login = async (req, res) => {
       return res.status(401).json({ msg: 'Invalid credentials' });
     }
   } catch (error) {
+    console.log('error in backend with login is', error);
     return res.status(500).json({ msg: error.message });
   }
 };

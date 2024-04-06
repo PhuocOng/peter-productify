@@ -32,6 +32,7 @@ export const loginUser = async (email, password) => {
     );
     return data;
   } catch (error) {
+    console.log('there is error with loginUser() in user.js');
     throw error;
   }
 };

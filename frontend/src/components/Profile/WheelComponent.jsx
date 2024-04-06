@@ -206,7 +206,7 @@ const WheelComponent = () => {
   return (
     <div key={wheelKey}>
       <div onClick={playAudio}>
-        {/* <p className={`${styles.paragraph} text-center`}>{description}</p> */}
+        <p className={`${styles.paragraph} text-center`}>{description}</p>
         <Wheel
           segments={segments.flat()}
           segColors={segColors}
