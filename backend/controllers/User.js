@@ -1,8 +1,8 @@
-const User = require('../models/User');
-const { generateToken, sendPasswordResetEmail } = require('../utils/auth');
-const { getAllAvatars } = require('../utils/getAllAvatars');
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
+const User = require("../models/User");
+const { generateToken, sendPasswordResetEmail } = require("../utils/auth");
+const { getAllAvatars } = require("../utils/getAllAvatars");
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 // Get leaderboard function
 const leaderboard = async (req, res) => {
@@ -11,8 +11,8 @@ const leaderboard = async (req, res) => {
     const users = await User.find();
     res.status(200).json(users);
   } catch (error) {
-    console.error('Error fetching leaderboard', error);
-    res.status(500).json({ error: 'Failed to fetch leaderboard' });
+    console.error("Error fetching leaderboard", error);
+    res.status(500).json({ error: "Failed to fetch leaderboard" });
   }
 };
 
@@ -20,20 +20,20 @@ const leaderboard = async (req, res) => {
 const signUp = async (req, res) => {
   let { email, username, password } = req.body;
   console.log(
-    'receive email, username, pass in signUp in user.js',
+    "receive email, username, pass in signUp in user.js",
     email,
     username,
-    password,
+    password
   );
   // simple validation
   if (!email || !username || !password) {
-    return res.status(400).json({ msg: 'Please enter all fields' });
+    return res.status(400).json({ msg: "Please enter all fields" });
   }
   // check for existing user
   try {
     const userExist = await User.findOne({ email });
     if (userExist) {
-      return res.status(400).json({ msg: 'User already exists' });
+      return res.status(400).json({ msg: "User already exists" });
     }
 
     // hash password
@@ -57,7 +57,7 @@ const signUp = async (req, res) => {
       bio: newUserSaved.bio,
     });
   } catch (error) {
-    console.log('we have error with signup in user.js in backend', error);
+    console.log("we have error with signup in user.js in backend", error);
     return res.status(500).json({ msg: error.message });
   }
 };
@@ -65,11 +65,11 @@ const signUp = async (req, res) => {
 // Login function
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log('login in backend (user.js file), receive email, password');
+  console.log("login in backend (user.js file), receive email, password");
 
   // simple validation
   if (!email || !password) {
-    return res.status(400).json({ msg: 'Please enter all fields' });
+    return res.status(400).json({ msg: "Please enter all fields" });
   }
   // check for existing user
   try {
@@ -87,10 +87,10 @@ const login = async (req, res) => {
         bio: existingUser.bio,
       });
     } else {
-      return res.status(401).json({ msg: 'Invalid credentials' });
+      return res.status(401).json({ msg: "Invalid credentials" });
     }
   } catch (error) {
-    console.log('error in backend with login is', error);
+    console.log("error in backend with login is", error);
     return res.status(500).json({ msg: error.message });
   }
 };
@@ -108,11 +108,11 @@ const getUser = async (req, res) => {
 const loginorsignup = async (req, res) => {
   try {
     const { email, username, password } = req.body;
-    console.log(req.body, '2e2edj');
+    console.log(req.body, "2e2edj");
 
     // Simple validation
     if (!email || !password) {
-      return res.status(400).json({ msg: 'Please enter all fields' });
+      return res.status(400).json({ msg: "Please enter all fields" });
     }
 
     // Check for existing user
@@ -172,7 +172,7 @@ const createEventWithGoogle = async (req, res) => {
     const event = req.body.EventForm;
     const token = req.body.token;
     oauth2Client.setCredentials({ refresh_token: token });
-    const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+    const calendar = google.calendar({ version: "v3", auth: oauth2Client });
     const eventT = {
       summary: event.summary,
       description: event.description,
@@ -188,7 +188,7 @@ const createEventWithGoogle = async (req, res) => {
     console.log(eventT);
     const response = await calendar.events.insert({
       auth: oauth2Client,
-      calendarId: 'primary',
+      calendarId: "primary",
       resource: eventT,
     });
 
@@ -205,7 +205,7 @@ const updateUser = async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(
       { _id: userId },
       { $set: updateInformation },
-      { new: true }, //return to (updateUser variable) the new data
+      { new: true } //return to (updateUser variable) the new data
     );
     res.status(200).json({ updateUser });
   } catch (error) {
@@ -220,7 +220,7 @@ const getAvatars = async (req, res) => {
     let currentUser = await User.findById(userId);
     const allAvatars = await getAllAvatars(
       currentUser.totalpoints,
-      currentUser.purchasedAvatars,
+      currentUser.purchasedAvatars
     );
 
     return res.status(200).json(allAvatars);
@@ -234,17 +234,17 @@ const forgotPassword = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(404).json({ error: 'Email not found' });
+    return res.status(404).json({ error: "Email not found" });
   }
 
-  const token = crypto.randomBytes(20).toString('hex');
+  const token = crypto.randomBytes(20).toString("hex");
   user.resetToken = token;
   user.resetTokenExpiresAt = Date.now() + 3600000;
   await user.save();
   sendPasswordResetEmail(
     email,
     `This is the link to change your password: http://localhost:3000/forgotpassword?email=${email}&token=${token}`,
-    'Password Reset',
+    "Password Reset"
   );
 
   res.status(200).json({ token });
@@ -260,7 +260,7 @@ const resetPassword = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid or expired token' });
+      return res.status(401).json({ error: "Invalid or expired token" });
     }
 
     // Update the user's password
@@ -273,7 +273,7 @@ const resetPassword = async (req, res) => {
     res.sendStatus(200);
   } catch (error) {
     console.log(`Error: ${error.message}`);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -288,7 +288,7 @@ const getLabelList = async (req, res) => {
     let currentLabelList = currentUser.labellist;
     res.status(200).json(currentLabelList);
   } catch (error) {
-    console.log('Failed to fetch labellist from current User', { error });
+    console.log("Failed to fetch labellist from current User", { error });
     res.status(500).json({ error: error });
   }
 };
@@ -307,23 +307,23 @@ const addLabelList = async (req, res) => {
       {
         labellist: newLabelList,
       },
-      { new: true },
+      { new: true }
     );
     res.status(200).json(updateUser.labellist);
   } catch (error) {
-    console.log('Failed to update labellist from current User', { error });
+    console.log("Failed to update labellist from current User", { error });
     res.status(500).json({ error: error });
   }
 };
 
 const deleteLabelList = async (req, res) => {
   const deleteLabel = req.body;
-  console.log('deleteLabel is', deleteLabel);
+  console.log("deleteLabel is", deleteLabel);
   try {
     const userId = req.user._id;
     const currentUser = await User.findById(userId);
     const currentLabelList = currentUser.labellist;
-    const newLabelList = currentLabelList.filter(labels => {
+    const newLabelList = currentLabelList.filter((labels) => {
       return (
         labels.name !== deleteLabel.name || labels.color !== deleteLabel.color
       );
@@ -331,11 +331,11 @@ const deleteLabelList = async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(
       userId,
       { labellist: newLabelList },
-      { new: true },
+      { new: true }
     );
     res.status(200).json(updateUser.labellist);
   } catch (error) {
-    console.log('failed to delete labels from labellist in current user', {
+    console.log("failed to delete labels from labellist in current user", {
       error,
     });
     res.status(500).json({ error: error });
@@ -350,13 +350,17 @@ const deductPoints = async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(
       { _id: userId },
       { points: currentUser.points - pointsToDeduct },
-      { new: true }, //return to (updateUser variable) the new data
+      { new: true } //return to (updateUser variable) the new data
     );
     res.status(200).json({ updateUser });
   } catch (error) {
     console.log(`Failed to modify user points: ${error}`);
     res.status(500).json({ error: error });
   }
+};
+
+const testBackend = (req, res) => {
+  res.status(200).json({ msg: "This backend of productify still work well" });
 };
 
 module.exports = {
@@ -375,4 +379,5 @@ module.exports = {
   getUserToken,
   createEventWithGoogle,
   deductPoints,
+  testBackend,
 };
